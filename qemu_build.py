@@ -15,7 +15,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 AML_SOURCE_DIR = SCRIPT_DIR / "pve-emu-realpc"
 
 # ── Target location on the PVE host ─────────────────────────────────────
-AML_DEPLOY_DIR = Path("/root")
+AML_DEPLOY_DIR = Path("/root/pve-emu-realpc")
 
 # Required AML files
 AML_FILES = [

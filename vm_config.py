@@ -20,16 +20,16 @@ from utils import random_serial, random_hex_serial, random_mac
 # ============================================================================
 
 DEFAULT_ACPI_FILES = {
-    "ssdt":    "/root/ssdt.aml",
-    "ssdt_ec": "/root/ssdt-ec.aml",
-    "hpet":    "/root/hpet.aml",
+    "ssdt":    "/root/pve-emu-realpc/ssdt.aml",
+    "ssdt_ec": "/root/pve-emu-realpc/ssdt-ec.aml",
+    "hpet":    "/root/pve-emu-realpc/hpet.aml",
 }
 
 # Battery variant (for laptops / NVIDIA 43 error workaround)
 ACPI_BATTERY_VARIANT = {
-    "ssdt":    "/root/ssdt-battery.aml",
-    "ssdt_ec": "/root/ssdt-ec.aml",
-    "hpet":    "/root/hpet.aml",
+    "ssdt":    "/root/pve-emu-realpc/ssdt-battery.aml",
+    "ssdt_ec": "/root/pve-emu-realpc/ssdt-ec.aml",
+    "hpet":    "/root/pve-emu-realpc/hpet.aml",
 }
 
 
@@ -55,10 +55,11 @@ def get_qemu_version_choice():
 # ============================================================================
 
 def _esc(val):
-    """Escape a value for QEMU args (wrap in backslash-quotes if needed)."""
-    if any(c in str(val) for c in (' ', '(', ')', ',', '.')):
-        return f'\\"{val}\\"'
-    return str(val)
+    """Escape a value for QEMU args (wrap in double quotes if needed)."""
+    s = str(val)
+    if any(c in s for c in (' ', '(', ')')):
+        return '"' + s + '"'
+    return s
 
 
 def build_args_line(profile, qemu_version=1, use_battery_ssdt=False):

@@ -19,7 +19,7 @@ from utils            import C, info, warn, error, header, banner
 from vendor_profiles  import select_vendor_profile
 from vm_config        import patch_vm_config, restore_vm_config, show_vm_config, list_vms
 from cpu_models       import patch_cpu_models, create_cpu_model, change_profile_vendor, show_cpu_profiles
-from qemu_build       import build_patched_qemu, generate_custom_patch
+from qemu_build       import install_helper, check_aml_files
 from detection_info   import show_detection_vectors
 
 # ============================================================================
@@ -59,8 +59,8 @@ def main_menu():
         print(f"  │  {C.MAGENTA} 8.{C.RESET} List VMs")
         print(f"  │  {C.MAGENTA} 9.{C.RESET} Show VM Config")
         print(f"  │  {C.YELLOW}10.{C.RESET} Restore VM Config (Remove Patch)")
-        print(f"  │  {C.YELLOW}11.{C.RESET} Generate Custom Vendor Patch")
-        print(f"  │  {C.YELLOW}12.{C.RESET} Build Patched QEMU")
+        print(f"  │  {C.YELLOW}11.{C.RESET} Check AML Files")
+        print(f"  │  {C.YELLOW}12.{C.RESET} Install Patched QEMU")
         print(f"  │  {C.DIM}13.{C.RESET} Show Detection Coverage Info")
         print(f"  │  {C.RED}14.{C.RESET} Exit")
         print(f"  └{'─'*52}")
@@ -125,16 +125,13 @@ def main_menu():
             if vmid:
                 restore_vm_config(CONF_DIR, vmid)
 
-        # ── 11 Generate custom patch ─────────────────────────
+        # ── 11 Check AML files ───────────────────────────────
         elif choice == '11':
-            if not current_profile:
-                warn("Select a vendor profile first (option 1).")
-                continue
-            generate_custom_patch(current_profile)
+            check_aml_files()
 
-        # ── 12 Build QEMU ────────────────────────────────────
+        # ── 12 Install patched QEMU ──────────────────────────
         elif choice == '12':
-            build_patched_qemu()
+            install_helper()
 
         # ── 13 Detection info ────────────────────────────────
         elif choice == '13':
